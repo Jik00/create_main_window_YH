@@ -100,4 +100,49 @@ class RestaurantSystem:
                bg=COLOR_RED, fg=COLOR_WHITE, font=('Helvetica', 10),
                cursor="hand2").pack(pady=12)
 
+    def open_history(self):
+        """Window 3: Order History Window"""
+        history = Toplevel(self.root)
+        history.title("📜 Order History")
+        history.geometry("850x450+200+100")
+        history.configure(bg=COLOR_LIGHT)
+        
+        Label(history, text="Order History", font=('Helvetica', 20, 'bold'),
+              fg=COLOR_RED, bg=COLOR_LIGHT).pack(pady=10)
+        
+        tree_frame = Frame(history, bg=COLOR_LIGHT)
+        tree_frame.pack(pady=8, padx=12, fill=BOTH, expand=True)
+        
+        tree = ttk.Treeview(tree_frame, columns=("#", "Customer", "Table", "Items", "Total", "Date"), 
+                            show="headings", height=10)
+        tree.heading("#", text="Order #")
+        tree.heading("Customer", text="Customer")
+        tree.heading("Table", text="Table")
+        tree.heading("Items", text="Items")
+        tree.heading("Total", text="Total")
+        tree.heading("Date", text="Date & Time")
+        
+        tree.column("#", width=90)
+        tree.column("Customer", width=130)
+        tree.column("Table", width=60)
+        tree.column("Items", width=60)
+        tree.column("Total", width=90)
+        tree.column("Date", width=160)
+        
+        for order in self.orders[-20:]:
+            tree.insert("", "end", values=(
+                order['order_number'],
+                order['customer_name'],
+                order['table_no'],
+                len(order['items']),
+                f"EGP {order['total']:.2f}",
+                order['datetime']
+            ))
+        
+        tree.pack(fill=BOTH, expand=True)
+        
+        Button(history, text="Close", command=history.destroy,
+               bg=COLOR_RED, fg=COLOR_WHITE, font=('Helvetica', 10),
+               cursor="hand2").pack(pady=10)
+
 
