@@ -63,7 +63,67 @@ class RestaurantSystem:
 
 
 
-# Nancy Nagy
+############## YOUSTINA - MAIN WINDOW ######################
+
+    def create_main_window(self):
+        """Window 1: Main Order Window"""
+        # Top Frame
+        Tops = Frame(self.root, bg=COLOR_DARK, height=80, relief=FLAT)
+        Tops.pack(side=TOP, fill=X)
+        
+        localtime = time.asctime(time.localtime(time.time()))
+        
+        title_label = Label(Tops, font=('Helvetica', 24, 'bold'), 
+                           text="🍽️ PREMIUM RESTAURANT MANAGEMENT SYSTEM", 
+                           fg=COLOR_YELLOW, bg=COLOR_DARK)
+        title_label.pack(pady=8)
+        
+        time_label = Label(Tops, font=('Helvetica', 11), 
+                          text=f"📅 {localtime}", 
+                          fg=COLOR_ORANGE, bg=COLOR_DARK)
+        time_label.pack()
+        
+        # Control Buttons Frame
+        control_frame = Frame(Tops, bg=COLOR_DARK)
+        control_frame.pack(pady=8)
+        
+        buttons = [
+            ("📊 Dashboard", self.open_dashboard, COLOR_ORANGE),
+            ("📜 Order History", self.open_history, COLOR_RED),
+            ("📋 Menu", self.open_menu, COLOR_YELLOW),
+            ("⚙️ Settings", self.open_settings, COLOR_DARK),
+            ("❌ Exit", self.exit_app, COLOR_RED)
+        ]
+        
+        for text, cmd, color in buttons:
+            btn = Button(control_frame, text=text, command=cmd, padx=12, pady=4,
+                        font=('Helvetica', 10, 'bold'), bg=color, fg=COLOR_WHITE,
+                        cursor="hand2", relief=RAISED, bd=2)
+            btn.pack(side=LEFT, padx=3)
+        
+        # Main Content - Split into two parts
+        main_content = Frame(self.root, bg=COLOR_LIGHT)
+        main_content.pack(fill=BOTH, expand=True, padx=8, pady=8)
+        
+        # Left side - Order entry (expandable)
+        left_frame = Frame(main_content, bg=COLOR_LIGHT)
+        left_frame.pack(side=LEFT, fill=BOTH, expand=True, padx=(0, 5))
+        
+        # Right side - Order summary (fixed width)
+        right_frame = Frame(main_content, bg=COLOR_LIGHT, width=320)
+        right_frame.pack(side=RIGHT, fill=BOTH, padx=(5, 0))
+        right_frame.pack_propagate(False)
+        
+        self.create_order_section(left_frame)
+        self.create_summary_section(right_frame)
+
+
+
+
+
+
+############## Nancy Nagy - DASHBOARD ####################
+
     def open_dashboard(self):
         """Window 2: Dashboard Window"""
         dashboard = Toplevel(self.root)
@@ -99,5 +159,3 @@ class RestaurantSystem:
         Button(dashboard, text="Close", command=dashboard.destroy,
                bg=COLOR_RED, fg=COLOR_WHITE, font=('Helvetica', 10),
                cursor="hand2").pack(pady=12)
-
-
