@@ -61,3 +61,43 @@ class RestaurantSystem:
         with open("restaurant_data.json", "w") as f:
             json.dump(data, f, indent=4)
 
+
+
+# Nancy Nagy
+    def open_dashboard(self):
+        """Window 2: Dashboard Window"""
+        dashboard = Toplevel(self.root)
+        dashboard.title("📊 Dashboard - Statistics")
+        dashboard.geometry("750x450+300+100")
+        dashboard.configure(bg=COLOR_LIGHT)
+        
+        Label(dashboard, text="Sales Dashboard", font=('Helvetica', 20, 'bold'),
+              fg=COLOR_RED, bg=COLOR_LIGHT).pack(pady=12)
+        
+        total_orders = len(self.orders)
+        total_revenue = sum(order['total'] for order in self.orders)
+        avg_order = total_revenue / total_orders if total_orders > 0 else 0
+        
+        stats_frame = Frame(dashboard, bg=COLOR_LIGHT)
+        stats_frame.pack(pady=12)
+        
+        stats = [
+            ("📦 Total Orders", total_orders),
+            ("💰 Total Revenue", f"EGP {total_revenue:.2f}"),
+            ("📊 Average Order", f"EGP {avg_order:.2f}"),
+            ("🍽️ Menu Items", len(self.menu_items))
+        ]
+        
+        for i, (label, value) in enumerate(stats):
+            frame = Frame(stats_frame, bg=COLOR_WHITE, bd=2, relief=GROOVE)
+            frame.grid(row=0, column=i, padx=8, pady=5)
+            Label(frame, text=label, font=('Helvetica', 10, 'bold'),
+                  bg=COLOR_WHITE, fg=COLOR_DARK).pack(pady=4, padx=8)
+            Label(frame, text=str(value), font=('Helvetica', 14, 'bold'),
+                  bg=COLOR_WHITE, fg=COLOR_RED).pack(pady=4, padx=8)
+        
+        Button(dashboard, text="Close", command=dashboard.destroy,
+               bg=COLOR_RED, fg=COLOR_WHITE, font=('Helvetica', 10),
+               cursor="hand2").pack(pady=12)
+
+
